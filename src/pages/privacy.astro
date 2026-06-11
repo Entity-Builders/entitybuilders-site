@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Privacidad - Entity Builders"
+  description="Como Entity Builders usa datos del diagnostico, email, AI y analytics."
+  pageType="privacy"
+>
+  <header class="site-header">
+    <div class="site-shell site-nav">
+      <a class="brand" href="/" aria-label="Entity Builders">
+        <span class="brand-mark">EB</span>
+        <span>Entity Builders</span>
+      </a>
+      <nav class="nav-links" aria-label="Principal">
+        <a href="/#diagnostico">Diagnostico</a>
+        <a href="/#showroom">Showroom</a>
+        <a href="/">Inicio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-shell privacy-page">
+    <p class="eyebrow">Privacidad</p>
+    <h1>El diagnostico inicial no es una sala de secretos.</h1>
+    <p class="privacy-page__lede">
+      Entity Builders usa el contexto que compartis para generar un brief,
+      responderte por email y entender si hay fit para una conversacion de
+      construccion. No vendas tu privacidad por un formulario: no compartas
+      credenciales, secretos, contratos privados ni documentacion sensible.
+    </p>
+
+    <div class="privacy-grid">
+      <section class="privacy-card">
+        <h2>Que guardamos</h2>
+        <ul>
+          <li>El contexto inicial que escribis.</li>
+          <li>Las respuestas a las preguntas dinamicas.</li>
+          <li>Tu email y campos opcionales de contacto.</li>
+          <li>El preview, el brief completo y metadatos internos de fit.</li>
+        </ul>
+      </section>
+
+      <section class="privacy-card">
+        <h2>Para que lo usamos</h2>
+        <p>
+          Para enviarte el brief completo, priorizar seguimiento comercial y
+          mejorar el proceso de diagnostico. No vendemos datos de leads.
+        </p>
+      </section>
+
+      <section class="privacy-card">
+        <h2>AI y criterio humano</h2>
+        <p>
+          El brief puede ser generado con AI siguiendo instrucciones de Entity
+          Builders. Si decidimos seguir, el trabajo privado se revisa con criterio
+          humano, specs y decisiones de producto.
+        </p>
+      </section>
+
+      <section class="privacy-card">
+        <h2>Analytics</h2>
+        <p>
+          Medimos eventos del sitio y del funnel con propiedades seguras. No
+          enviamos a analytics tu contexto crudo, respuestas, email ni brief.
+        </p>
+      </section>
+
+      <section class="privacy-card">
+        <h2>Email</h2>
+        <p>
+          Usamos email para entregarte el brief y continuar la conversacion si
+          respondes. Si el envio automatico falla, podemos hacer seguimiento
+          manual con el lead guardado.
+        </p>
+      </section>
+
+      <section class="privacy-card">
+        <h2>Eliminacion</h2>
+        <p>
+          Podes pedir que borremos tu diagnostico y datos de contacto escribiendo
+          a <a href="mailto:hello@entitybuilders.ai">hello@entitybuilders.ai</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+</Layout>

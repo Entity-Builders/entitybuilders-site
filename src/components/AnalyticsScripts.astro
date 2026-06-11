@@ -1,0 +1,39 @@
+---
+type PageType = 'home' | 'privacy' | 'unknown';
+
+export interface Props {
+  title: string;
+  pageType?: PageType;
+}
+
+const { title, pageType = 'unknown' } = Astro.props;
+const posthogKey = import.meta.env.PUBLIC_POSTHOG_KEY || '';
+const posthogHost =
+  import.meta.env.PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com';
+
+const config = {
+  posthogKey,
+  posthogHost,
+  environment: import.meta.env.PROD ? 'production' : 'development',
+  route: Astro.url.pathname,
+  pageType,
+  title,
+};
+---
+
+{
+  posthogKey && (
+    <>
+      <script
+        id="entitybuilders-analytics-config"
+        type="application/json"
+        set:html={JSON.stringify(config)}
+      />
+      <script>
+        import { initEntityBuildersAnalyticsFromDom } from '../lib/entitybuildersAnalytics';
+
+        initEntityBuildersAnalyticsFromDom();
+      </script>
+    </>
+  )
+}

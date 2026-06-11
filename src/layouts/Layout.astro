@@ -1,0 +1,55 @@
+---
+import AnalyticsScripts from '../components/AnalyticsScripts.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  pageType?: 'home' | 'privacy' | 'unknown';
+}
+
+const {
+  title,
+  description = 'Entity Builders convierte negocios con expertise, operacion o demanda real en entidades digitales que venden, responden, aprenden y organizan.',
+  pageType = 'unknown',
+} = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og-image.svg', Astro.site).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Entity Builders" />
+    <meta name="theme-color" content="#F7F4EA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Entity Builders" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <AnalyticsScripts title={title} pageType={pageType} />
+  </head>
+  <body data-page-type={pageType}>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

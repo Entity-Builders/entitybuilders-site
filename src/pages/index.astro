@@ -1,0 +1,183 @@
+---
+import DiagnosticFunnel from '../components/DiagnosticFunnel';
+import Layout from '../layouts/Layout.astro';
+import { processSteps, showroomEntities } from '../lib/siteData';
+---
+
+<Layout
+  title="Entity Builders - Entidades digitales para negocios reales"
+  pageType="home"
+>
+  <header class="site-header">
+    <div class="site-shell site-nav">
+      <a class="brand" href="/" aria-label="Entity Builders">
+        <span class="brand-mark">EB</span>
+        <span>Entity Builders</span>
+      </a>
+      <nav class="nav-links" aria-label="Principal">
+        <a href="#diagnostico">Diagnostico</a>
+        <a href="#showroom">Showroom</a>
+        <a href="#proceso">Proceso</a>
+        <a href="/privacy">Privacidad</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="capture-zone">
+      <div class="entity-scene" aria-hidden="true">
+        <span class="entity-scene__rail"></span>
+        <span class="entity-scene__rail"></span>
+        <span class="entity-scene__rail"></span>
+        <span class="entity-scene__node">Showroom</span>
+        <span class="entity-scene__node">AI Workflow</span>
+        <span class="entity-scene__node">Analytics</span>
+        <div class="entity-scene__panel">
+          <span>Entity map</span>
+          <strong>Negocio -> sistema -> aprendizaje</strong>
+        </div>
+      </div>
+
+      <div class="site-shell capture-grid">
+        <section class="hero-copy" aria-labelledby="hero-title">
+          <p class="eyebrow">Studio operativo</p>
+          <h1 id="hero-title">Hacemos que tu negocio trabaje mejor online.</h1>
+          <p class="hero-lede">
+            Diseñamos y construimos la primera version de un sistema que muestra
+            tu oferta, captura consultas, responde mejor y ordena operaciones,
+            sin que tengas que armar un equipo tecnico.
+          </p>
+          <p class="hero-bridge">
+            A eso le llamamos una entidad digital: una web, flujo o asistente
+            que ayuda a vender, responder, organizar o aprender.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#diagnostico" data-analytics-surface="hero" data-analytics-action="start_diagnostic">Probar diagnostico gratis</a>
+            <a class="button button--ghost" href="#showroom" data-analytics-surface="hero" data-analytics-action="view_showroom">Ver ejemplos reales</a>
+          </div>
+        </section>
+
+        <aside class="diagnostic-shell" aria-label="Diagnostico gratis">
+          <DiagnosticFunnel client:load />
+        </aside>
+
+        <section class="capture-proof" aria-label="Señales de encaje">
+          <p>Sirve si hoy:</p>
+          <ul>
+            <li>vendes o respondes demasiado por WhatsApp;</li>
+            <li>tu oferta cuesta explicarla rapido;</li>
+            <li>queres mejores consultas desde tu web;</li>
+            <li>operas con mensajes, planillas o pasos manuales;</li>
+            <li>tenes conocimiento experto que podria guiar clientes.</li>
+          </ul>
+        </section>
+
+        <section class="entity-definition" id="entidad">
+        <p class="definition-lede">
+          Una entidad digital es una parte de tu negocio convertida en sistema:
+          una web, flujo, asistente o herramienta que trabaja con contexto real.
+        </p>
+        <div class="definition-grid">
+          <div class="definition-tile">
+            <strong>Muestra</strong>
+            <p>Convierte expertise, producto o servicio en una presencia clara y confiable.</p>
+          </div>
+          <div class="definition-tile">
+            <strong>Vende</strong>
+            <p>Ordena oferta, conversion, checkout, leads o conversaciones comerciales.</p>
+          </div>
+          <div class="definition-tile">
+            <strong>Responde</strong>
+            <p>Usa AI con criterio para asistir, diagnosticar o guiar sin perder tono.</p>
+          </div>
+          <div class="definition-tile">
+            <strong>Organiza</strong>
+            <p>Reduce friccion operativa con datos, dashboards, workflows y specs privadas.</p>
+          </div>
+        </div>
+        </section>
+
+        <section class="process-section" id="proceso">
+          <div class="section-heading section-heading--stacked">
+            <h2>Del contexto crudo a un sistema que trabaja.</h2>
+            <p>
+              AI aparece como acelerador, no como promesa vacia. El trabajo es
+              producto, operacion, specs, infraestructura y aprendizaje real.
+            </p>
+          </div>
+          <div class="process-grid">
+            {processSteps.map((step) => (
+              <article class="process-step">
+                <span>{step.label}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section" id="showroom">
+      <div class="site-shell">
+        <div class="section-heading">
+          <h2>Ejemplos reales de sistemas online.</h2>
+          <p>
+            No son slides de agencia. Son productos, experimentos y sistemas reales
+            del universo Entity Builders, cada uno en su estado honesto.
+          </p>
+        </div>
+        <div class="showroom-grid">
+          {showroomEntities.map((entity) => (
+            <a
+              class="entity-card"
+              href={entity.href ?? '#diagnostico'}
+              target={entity.href ? '_blank' : undefined}
+              rel={entity.href ? 'noreferrer' : undefined}
+              data-analytics-surface="showroom"
+              data-analytics-action={entity.name}
+            >
+              <div class="entity-card__meta">
+                <span>{entity.type}</span>
+                <span class="status">{entity.status}</span>
+              </div>
+              <h3>{entity.name}</h3>
+              <p>{entity.problem}</p>
+              <div class="entity-card__systems">
+                {entity.systems.map((system) => <span>{system}</span>)}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="site-shell">
+        <div class="founder-panel">
+          <div>
+            <p class="eyebrow">Built by</p>
+            <h2>Juan Obrach</h2>
+          </div>
+          <p>
+            Entity Builders es el estudio y laboratorio de Juan Obrach, senior
+            product engineer. La marca permite construir mas que un portfolio; el
+            nombre detras mantiene criterio, responsabilidad y oficio en cada
+            decision.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-shell footer-row">
+      <span>Entity Builders - Buenos Aires, construyendo para la web.</span>
+      <nav aria-label="Footer">
+        <a href="#diagnostico">Diagnostico</a>
+        <a href="/privacy">Privacidad</a>
+        <a href="mailto:hello@entitybuilders.ai">Email</a>
+      </nav>
+    </div>
+  </footer>
+</Layout>

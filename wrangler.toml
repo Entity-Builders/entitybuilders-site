@@ -1,0 +1,9 @@
+name = "entitybuilders-site"
+compatibility_date = "2025-05-01"
+routes = [
+  { pattern = "entitybuilders.io", custom_domain = true },
+  { pattern = "www.entitybuilders.io", custom_domain = true }
+]
+
+[assets]
+directory = "./dist"
