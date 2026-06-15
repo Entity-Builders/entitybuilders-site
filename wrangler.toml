@@ -1,8 +1,8 @@
 name = "entitybuilders-site"
 compatibility_date = "2025-05-01"
 routes = [
-  { pattern = "entitybuilders.ai", custom_domain = true },
-  { pattern = "www.entitybuilders.ai", custom_domain = true }
+  { pattern = "entitybuilders.ai/*", zone_name = "entitybuilders.ai" },
+  { pattern = "www.entitybuilders.ai/*", zone_name = "entitybuilders.ai" }
 ]
 
 [assets]
