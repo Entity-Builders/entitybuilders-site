@@ -1,5 +1,6 @@
 name = "entitybuilders-site"
 compatibility_date = "2025-05-01"
+main = "./worker/index.js"
 routes = [
   { pattern = "entitybuilders.ai/*", zone_name = "entitybuilders.ai" },
   { pattern = "www.entitybuilders.ai/*", zone_name = "entitybuilders.ai" }
@@ -7,3 +8,8 @@ routes = [
 
 [assets]
 directory = "./dist"
+binding = "ASSETS"
+run_worker_first = true
+
+[vars]
+ENTITYBUILDERS_SITE_USERNAME = "entitybuilders"
