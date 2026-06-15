@@ -4,6 +4,6 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   output: 'static',
-  site: 'https://entitybuilders.io',
+  site: 'https://entitybuilders.ai',
   integrations: [react(), sitemap()],
 });
