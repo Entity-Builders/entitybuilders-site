@@ -17,11 +17,19 @@ type Question = {
   recommendedAnswer?: string;
 };
 
+type RecommendationOption = {
+  id: string;
+  label: string;
+  recommended?: boolean;
+  reason?: string;
+};
+
 type InterviewTurn = {
   reading: string;
   checkpoint?: string;
   recommendation: string;
   recommendationItems?: string[];
+  recommendationOptions?: RecommendationOption[];
   question: Question;
   canGeneratePreview: boolean;
   isComplete: boolean;
@@ -42,6 +50,12 @@ type Preview = {
   summary: string;
   entityType: string;
   opportunity: string;
+  architectureSketch?: {
+    currentSurfaces?: string[];
+    likelyFlow?: string[];
+    missingInfrastructure?: string[];
+    recommendedAdditions?: string[];
+  };
   openQuestions: string[];
   firstActions: string[];
 };
@@ -70,6 +84,10 @@ const minimumContextLength = 40;
 const maxFallbackTurns = 3;
 
 type LoadingPurpose = "start" | "answer" | "preview" | "brief" | null;
+type ArchitectureSection = {
+  label: string;
+  items: string[];
+};
 
 const quickStartOptions = [
   {
@@ -240,6 +258,19 @@ function fallbackInterviewTurn(answers: InterviewAnswer[]): InterviewTurn {
     recommendation:
       "Reintentar el turno del modelo o agregar un dato concreto y no sensible. No mostramos una pregunta generica como si fuera del asesor.",
     recommendationItems: [],
+    recommendationOptions: [
+      {
+        id: "add_context",
+        label: "Agregar un dato concreto del negocio",
+        recommended: true,
+        reason: "Evita inventar un diagnostico generico.",
+      },
+      {
+        id: "retry",
+        label: "Reintentar el turno del modelo",
+        reason: "Sirve si el contexto ya era suficiente.",
+      },
+    ],
     question: {
       id: "retry_with_context",
       text:
@@ -253,6 +284,24 @@ function fallbackInterviewTurn(answers: InterviewAnswer[]): InterviewTurn {
     turnIndex: Math.min(answers.length, maxFallbackTurns),
     maxTurns: maxFallbackTurns,
   };
+}
+
+function preferredOptionId(turn: InterviewTurn): string {
+  return (
+    turn.recommendationOptions?.find((option) => option.recommended)?.id ??
+      turn.recommendationOptions?.[0]?.id ??
+      ""
+  );
+}
+
+function answerTextFromSelection(
+  option: RecommendationOption | null,
+  clarification: string,
+): string {
+  const cleanClarification = clarification.trim();
+  if (!option) return cleanClarification;
+  if (!cleanClarification) return option.label;
+  return `${option.label}. Aclaracion: ${cleanClarification}`;
 }
 
 function answerArray(answers: InterviewAnswer[]) {
@@ -329,6 +378,13 @@ function previewActionParts(action: string): { title?: string; body: string } {
   return { body: clean };
 }
 
+function cleanPreviewList(value: string[] | undefined, limit = 4): string[] {
+  return (value ?? [])
+    .map((item) => cleanDisplayText(item))
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
 function LoadingPanel({ purpose }: { purpose: Exclude<LoadingPurpose, null> }) {
   const message = loadingMessages[purpose];
 
@@ -393,6 +449,7 @@ export default function DiagnosticFunnel() {
     [],
   );
   const [currentAnswer, setCurrentAnswer] = useState("");
+  const [selectedOptionId, setSelectedOptionId] = useState("");
   const [preview, setPreview] = useState<Preview | null>(null);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -432,9 +489,50 @@ export default function DiagnosticFunnel() {
       .filter(Boolean)
       .slice(0, 3)
     : [];
+  const currentRecommendationOptions = currentTurn
+    ? (currentTurn.recommendationOptions ?? [])
+      .map((option) => ({
+        ...option,
+        label: cleanDisplayText(option.label),
+        reason: option.reason ? cleanDisplayText(option.reason) : undefined,
+      }))
+      .filter((option) => option.label.length > 0)
+      .slice(0, 4)
+    : [];
+  const selectedOption = currentRecommendationOptions.find((option) =>
+    option.id === selectedOptionId
+  ) ?? null;
+  const currentAnswerPayload = answerTextFromSelection(
+    selectedOption,
+    currentAnswer,
+  );
   const hasRecommendationDetails =
     currentRecommendation.length > currentRecommendationSummary.length + 24 ||
     currentRecommendationItems.length > 0;
+  const architectureSections: ArchitectureSection[] = preview?.architectureSketch
+    ? [
+      {
+        label: "Superficies",
+        items: cleanPreviewList(preview.architectureSketch.currentSurfaces),
+      },
+      {
+        label: "Flujo probable",
+        items: cleanPreviewList(preview.architectureSketch.likelyFlow),
+      },
+      {
+        label: "Infraestructura faltante",
+        items: cleanPreviewList(
+          preview.architectureSketch.missingInfrastructure,
+        ),
+      },
+      {
+        label: "Agregaria Entity Builders",
+        items: cleanPreviewList(
+          preview.architectureSketch.recommendedAdditions,
+        ),
+      },
+    ].filter((section) => section.items.length > 0)
+    : [];
   const canStartInterview = context.trim().length >= minimumContextLength;
   const canGeneratePreview = useMemo(
     () =>
@@ -468,8 +566,12 @@ export default function DiagnosticFunnel() {
         throw new Error("missing_interview_turn");
       }
       setTurns([result.interviewTurn]);
+      setCurrentAnswer("");
+      setSelectedOptionId(preferredOptionId(result.interviewTurn));
     } catch {
-      setTurns([fallbackInterviewTurn([])]);
+      const fallbackTurn = fallbackInterviewTurn([]);
+      setTurns([fallbackTurn]);
+      setSelectedOptionId(preferredOptionId(fallbackTurn));
       setUsingFallback(true);
       setError(
         "No pudimos generar una entrevista contextual ahora. Agrega un dato mas o intenta de nuevo; no vamos a inventar una pregunta generica.",
@@ -483,9 +585,11 @@ export default function DiagnosticFunnel() {
 
   async function submitInterviewAnswer() {
     if (!currentTurn) return;
-    const trimmedAnswer = currentAnswer.trim();
+    const trimmedAnswer = currentAnswerPayload.trim();
     if (!trimmedAnswer) {
-      setError("Responde esta pregunta o genera el preview con lo que ya hay.");
+      setError(
+        "Elige una opcion, agrega una aclaracion o genera el preview con lo que ya hay.",
+      );
       return;
     }
 
@@ -503,6 +607,7 @@ export default function DiagnosticFunnel() {
     const nextAnswers = [...interviewAnswers, nextAnswer];
     setInterviewAnswers(nextAnswers);
     setCurrentAnswer("");
+    setSelectedOptionId("");
     track("diagnostic_question_answered", {
       question_index: nextAnswers.length,
       answer_length_bucket: lengthBucket(trimmedAnswer),
@@ -531,9 +636,12 @@ export default function DiagnosticFunnel() {
         throw new Error("missing_interview_turn");
       }
       setTurns((current) => [...current, result.interviewTurn]);
+      setSelectedOptionId(preferredOptionId(result.interviewTurn));
       setUsingFallback(false);
     } catch {
-      setTurns((current) => [...current, fallbackInterviewTurn(nextAnswers)]);
+      const fallbackTurn = fallbackInterviewTurn(nextAnswers);
+      setTurns((current) => [...current, fallbackTurn]);
+      setSelectedOptionId(preferredOptionId(fallbackTurn));
       setUsingFallback(true);
       setError(
         "La siguiente pregunta contextual no llego. Podes reintentar o generar preview si ya hay suficiente contexto.",
@@ -652,6 +760,7 @@ export default function DiagnosticFunnel() {
     setTurns([]);
     setInterviewAnswers([]);
     setCurrentAnswer("");
+    setSelectedOptionId("");
     setPreview(null);
     setSubmitResult(null);
     setError(null);
@@ -770,7 +879,7 @@ export default function DiagnosticFunnel() {
                 <span>{currentCheckpoint}</span>
               </p>
               <div className="diagnostic__question-line">
-                <strong>Pregunta {currentTurnNumber}:</strong>
+                <strong>Decision {currentTurnNumber}:</strong>
                 <span>{currentQuestion}</span>
               </div>
               <div className="diagnostic__recommendation-block">
@@ -798,13 +907,50 @@ export default function DiagnosticFunnel() {
                 <div className="diagnostic__response-area">
                   {!currentTurn.isComplete
                     ? (
-                      <textarea
-                        value={currentAnswer}
-                        onChange={(event) =>
-                          setCurrentAnswer(event.target.value)}
-                        rows={4}
-                        placeholder="Responde corto, con lo que sepas. Si falta algo, el agente ajusta la siguiente pregunta."
-                      />
+                      <>
+                        {currentRecommendationOptions.length > 0 && (
+                          <div
+                            className="diagnostic__option-list"
+                            role="radiogroup"
+                            aria-label="Opciones recomendadas"
+                          >
+                            {currentRecommendationOptions.map((option) => {
+                              const isSelected = option.id === selectedOptionId;
+                              return (
+                                <button
+                                  key={option.id}
+                                  className="diagnostic__option"
+                                  type="button"
+                                  role="radio"
+                                  aria-checked={isSelected}
+                                  data-selected={isSelected ? "true" : "false"}
+                                  data-recommended={option.recommended
+                                    ? "true"
+                                    : "false"}
+                                  onClick={() => setSelectedOptionId(option.id)}
+                                >
+                                  <span>
+                                    {option.label}
+                                    {option.recommended && (
+                                      <small>Recomendada</small>
+                                    )}
+                                  </span>
+                                  {option.reason && <em>{option.reason}</em>}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                        <textarea
+                          value={currentAnswer}
+                          onChange={(event) =>
+                            setCurrentAnswer(event.target.value)}
+                          rows={3}
+                          placeholder={selectedOption
+                            ? "Opcional: agrega un matiz si esta opcion necesita contexto."
+                            : "Si ninguna opcion encaja, responde corto con lo que sepas."}
+                        />
+                      </>
                     )
                     : interviewAnswers[currentTurn.turnIndex]
                     ? (
@@ -855,11 +1001,13 @@ export default function DiagnosticFunnel() {
                 <button
                   className="diagnostic__primary"
                   type="button"
-                  disabled={isLoading || !currentAnswer.trim()}
+                  disabled={isLoading || !currentAnswerPayload.trim()}
                   onClick={submitInterviewAnswer}
                 >
                   <Send size={16} aria-hidden="true" />
-                  {isLoading ? "Pensando" : "Continuar"}
+                  {isLoading ? "Pensando" : selectedOption
+                    ? "Confirmar"
+                    : "Continuar"}
                 </button>
               )}
             </div>
@@ -880,6 +1028,23 @@ export default function DiagnosticFunnel() {
                 <strong>Oportunidad</strong>
                 <p>{cleanDisplayText(preview.opportunity)}</p>
               </div>
+              {architectureSections.length > 0 && (
+                <div className="diagnostic__architecture">
+                  <strong>Esqueleto de entidad actual</strong>
+                  <div className="diagnostic__architecture-grid">
+                    {architectureSections.map((section) => (
+                        <section key={section.label}>
+                          <span>{section.label}</span>
+                          <ul>
+                            {section.items.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </section>
+                      ))}
+                  </div>
+                </div>
+              )}
               <div>
                 <strong>Primeras acciones</strong>
                 <ol className="diagnostic__action-list">
@@ -929,11 +1094,11 @@ export default function DiagnosticFunnel() {
               </label>
             </div>
             <label>
-              Web, Instagram o LinkedIn
+              Web, redes o plataformas
               <input
                 value={websiteUrl}
                 onChange={(event) => setWebsiteUrl(event.target.value)}
-                placeholder="Opcional"
+                placeholder="Sitio, Instagram, WhatsApp, tienda, CRM..."
               />
             </label>
             <button

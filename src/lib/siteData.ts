@@ -9,7 +9,10 @@ export type ShowroomEntity = {
   name: string;
   type: string;
   status: EntityStatus;
+  statusLabel: string;
   problem: string;
+  outcome: string;
+  role: string;
   systems: string[];
   href?: string;
 };
@@ -19,8 +22,12 @@ export const showroomEntities: ShowroomEntity[] = [
     name: 'Tablia',
     type: 'Entidad para restaurantes',
     status: 'online',
+    statusLabel: 'Online',
     problem:
-      'Convierte un restaurante en una presencia operable: landing, menu QR, asistente y flujo owner.',
+      'Un restaurante necesita que carta, QR, consulta y operacion owner no vivan como piezas sueltas.',
+    outcome:
+      'Convierte presencia publica, menu QR, asistente y flujo owner en una entidad operable de punta a punta.',
+    role: 'Sistema operativo comercial para restaurante.',
     systems: ['Landing publica', 'Menu QR', 'AI assistant', 'Owner workflow'],
     href: 'https://tablia.io',
   },
@@ -28,8 +35,12 @@ export const showroomEntities: ShowroomEntity[] = [
     name: 'Flowtranslate',
     type: 'Entidad de aprendizaje',
     status: 'online',
+    statusLabel: 'Online',
     problem:
-      'Hace que traduccion, mejora de ingles e historial aprendible vivan en un mismo sistema de practica.',
+      'Traducir, mejorar ingles y recordar aprendizajes suele quedar separado entre chats, notas y memoria.',
+    outcome:
+      'Ordena traduccion, practica, historial y cupos en una PWA con una experiencia de aprendizaje continua.',
+    role: 'Herramienta diaria con backend, auth, cuotas y AI.',
     systems: ['PWA', 'Supabase Auth', 'Gemini', 'Quota', 'Learning'],
     href: 'https://flowtranslate.app',
   },
@@ -37,8 +48,12 @@ export const showroomEntities: ShowroomEntity[] = [
     name: 'PostalPeek',
     type: 'Entidad de coleccion',
     status: 'experiment',
+    statusLabel: 'Experimento',
     problem:
-      'Explora discovery, coleccion y medios generativos alrededor de postales acuareladas de lugares reales.',
+      'Una idea creativa necesita probar discovery, coleccion y valor visual antes de prometer un producto maduro.',
+    outcome:
+      'Explora feed, albumes, colecciones y medios generativos como laboratorio de producto cultural.',
+    role: 'Aprendizaje sobre loops de coleccion y generative media.',
     systems: ['Feed', 'Collection', 'Generative media', 'Albums'],
     href: 'https://postalpeek.app',
   },
@@ -46,8 +61,12 @@ export const showroomEntities: ShowroomEntity[] = [
     name: 'Juan Obrach',
     type: 'Entidad profesional',
     status: 'online',
+    statusLabel: 'Online',
     problem:
-      'Organiza prueba profesional, escritura, case studies, asistente y analytics para convertir conversaciones.',
+      'Un perfil senior necesita mostrar criterio, casos y disponibilidad sin depender solo de mensajes privados.',
+    outcome:
+      'Vuelve portfolio, escritura, casos, asistente y analytics una superficie que sostiene conversaciones comerciales.',
+    role: 'Presencia profesional y prueba viva de oficio.',
     systems: ['SEO', 'Assistant', 'Analytics', 'Case studies'],
     href: 'https://juanobrach.dev',
   },
@@ -55,8 +74,12 @@ export const showroomEntities: ShowroomEntity[] = [
     name: 'Zigzag',
     type: 'Entidad de turismo',
     status: 'prototype',
+    statusLabel: 'Prototipo',
     problem:
-      'Investiga como planificar experiencias turisticas desde decisiones, mapas, preferencias y contexto local.',
+      'La planificacion turistica mezcla deseos, rutas, lugares, restricciones y contexto local dificil de ordenar.',
+    outcome:
+      'Investiga como convertir decisiones, mapas y preferencias en una experiencia guiada y construible.',
+    role: 'Prototipo para validar arquitectura de decision UX.',
     systems: ['Routes', 'Places', 'AI enrichment', 'Decision UX'],
   },
 ];
@@ -64,26 +87,20 @@ export const showroomEntities: ShowroomEntity[] = [
 export const processSteps = [
   {
     label: 'Diagnostico',
-    title: 'Entender la entidad',
+    title: 'Leer el desorden real',
     body:
-      'Partimos de contexto crudo y preguntas dinamicas para separar negocio, operacion, usuario y oportunidad.',
+      'Partimos de tu web, redes, idea o friccion operativa y hacemos pocas preguntas para ubicar la oportunidad concreta.',
   },
   {
-    label: 'Definition Sprint',
-    title: 'Volverlo construible',
+    label: 'Mapa',
+    title: 'Definir la primera entidad',
     body:
-      'Convertimos el diagnostico en specs privadas, flujo, riesgos, arquitectura inicial y presupuesto por fases.',
+      'Convertimos contexto suelto en una arquitectura inicial: que captura, que responde, que automatiza y donde necesita revision humana.',
   },
   {
     label: 'Build',
-    title: 'Lanzar una primera entidad',
+    title: 'Lanzar una version usable',
     body:
-      'Construimos la version minima online: presencia, workflows, data, analytics y automatizaciones necesarias.',
-  },
-  {
-    label: 'Operate & Evolve',
-    title: 'Medir y mejorar',
-    body:
-      'La entidad aprende con uso real: funnels, leads, operaciones, AI, herramientas internas y nuevas decisiones.',
+      'Construimos la primera version online con flujo, datos, AI si suma, analytics y los limites necesarios para operar con confianza.',
   },
 ];

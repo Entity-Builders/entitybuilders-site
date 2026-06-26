@@ -381,6 +381,68 @@
   gap: 8px;
 }
 
+.diagnostic__option-list {
+  display: grid;
+  gap: 8px;
+}
+
+.diagnostic__option {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(45, 157, 146, 0.28);
+  border-radius: 8px;
+  padding: 10px 11px;
+  background: rgba(45, 157, 146, 0.06);
+  color: var(--ink);
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.diagnostic__option:hover {
+  border-color: rgba(45, 157, 146, 0.52);
+  background: rgba(45, 157, 146, 0.1);
+}
+
+.diagnostic__option[data-selected="true"] {
+  border-color: var(--teal-deep);
+  background: rgba(45, 157, 146, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(45, 157, 146, 0.24);
+}
+
+.diagnostic__option span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  color: var(--ink);
+  font-size: 0.84rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.diagnostic__option small {
+  border-radius: 999px;
+  padding: 2px 6px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.64rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.diagnostic__option em {
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  font-style: normal;
+  line-height: 1.3;
+}
+
 .diagnostic__response-area textarea {
   min-height: 78px;
   background: var(--paper-strong);
@@ -475,6 +537,48 @@
 .diagnostic__preview-grid strong {
   display: block;
   margin-bottom: 6px;
+}
+
+.diagnostic__architecture {
+  grid-column: 1 / -1;
+}
+
+.diagnostic__architecture-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.diagnostic__architecture-grid section {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  border: 1px solid rgba(16, 24, 32, 0.12);
+  border-radius: 8px;
+  padding: 9px;
+  background: rgba(255, 253, 245, 0.7);
+}
+
+.diagnostic__architecture-grid span {
+  color: var(--teal-deep);
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.diagnostic__architecture-grid ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 17px;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  line-height: 1.34;
+}
+
+.diagnostic__architecture-grid li::marker {
+  color: var(--teal-deep);
 }
 
 .diagnostic__action-list {
@@ -591,6 +695,7 @@
   }
 
   .diagnostic__preview-grid,
+  .diagnostic__architecture-grid,
   .diagnostic__contact-grid {
     grid-template-columns: 1fr;
   }

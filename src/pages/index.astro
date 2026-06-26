@@ -16,7 +16,7 @@ import { processSteps, showroomEntities } from '../lib/siteData';
       </a>
       <nav class="nav-links" aria-label="Principal">
         <a href="#diagnostico">Diagnostico</a>
-        <a href="#showroom">Showroom</a>
+        <a href="#showroom">Ejemplos</a>
         <a href="#proceso">Proceso</a>
         <a href="/privacy">Privacidad</a>
       </nav>
@@ -24,58 +24,97 @@ import { processSteps, showroomEntities } from '../lib/siteData';
   </header>
 
   <main>
-    <section class="capture-zone">
-      <div class="entity-scene" aria-hidden="true">
-        <span class="entity-scene__rail"></span>
-        <span class="entity-scene__rail"></span>
-        <span class="entity-scene__rail"></span>
-        <span class="entity-scene__node">Showroom</span>
-        <span class="entity-scene__node">AI Workflow</span>
-        <span class="entity-scene__node">Analytics</span>
-        <div class="entity-scene__panel">
-          <span>Entity map</span>
-          <strong>Negocio -> sistema -> aprendizaje</strong>
-        </div>
-      </div>
-
-      <div class="site-shell capture-grid">
+    <section class="hero-section">
+      <div class="site-shell hero-grid">
         <section class="hero-copy" aria-labelledby="hero-title">
           <p class="eyebrow">Studio operativo</p>
-          <h1 id="hero-title">Hacemos que tu negocio trabaje mejor online.</h1>
+          <h1 id="hero-title">Tu negocio vive entre WhatsApp, planillas y decisiones manuales.</h1>
           <p class="hero-lede">
-            Diseñamos y construimos la primera version de un sistema que muestra
-            tu oferta, captura consultas, responde mejor y ordena operaciones,
-            sin que tengas que armar un equipo tecnico.
+            Lo convertimos en una entidad digital que puede vender, responder,
+            ordenar y coordinar contexto real de tu negocio.
           </p>
           <p class="hero-bridge">
-            A eso le llamamos una entidad digital: una web, flujo o asistente
-            que ayuda a vender, responder, organizar o aprender.
+            Primero hacemos un diagnostico y un mapa inicial. Despues decidimos
+            que vale la pena construir, que debe seguir manual y que conviene
+            automatizar con cuidado.
           </p>
           <div class="hero-actions">
-            <a class="button" href="#diagnostico" data-analytics-surface="hero" data-analytics-action="start_diagnostic">Probar diagnostico gratis</a>
-            <a class="button button--ghost" href="#showroom" data-analytics-surface="hero" data-analytics-action="view_showroom">Ver ejemplos reales</a>
+            <a class="button" href="#diagnostico" data-analytics-surface="hero" data-analytics-action="start_diagnostic_map">Obtener diagnostico y mapa inicial</a>
+            <a class="button button--ghost" href="#showroom" data-analytics-surface="hero" data-analytics-action="view_real_examples">Ver ejemplos reales</a>
           </div>
         </section>
 
-        <aside class="diagnostic-shell" aria-label="Diagnostico gratis">
-          <DiagnosticFunnel client:load />
+        <aside class="entity-map-panel" aria-label="Ejemplo provisional de mapa de entidad digital">
+          <div class="entity-map-panel__header">
+            <span>Mapa inicial ejemplo</span>
+            <strong>Antes de construir</strong>
+          </div>
+          <div class="map-columns">
+            <div class="map-column">
+              <p>Contexto actual</p>
+              <span>WhatsApp como CRM</span>
+              <span>Web que no califica</span>
+              <span>Redes sin seguimiento</span>
+              <span>Planillas y memoria</span>
+            </div>
+            <div class="map-column map-column--target">
+              <p>Primera entidad digital</p>
+              <span>Intake con criterios</span>
+              <span>Oferta y precios ordenados</span>
+              <span>Revision humana antes de confirmar</span>
+              <span>Analytics de conversion</span>
+            </div>
+          </div>
+          <div class="map-flow" aria-hidden="true">
+            <span>Captura</span>
+            <span>Califica</span>
+            <span>Responde</span>
+            <span>Aprende</span>
+          </div>
+          <p class="map-note">
+            Es una muestra del artefacto que buscamos: no adivinamos tu negocio
+            antes de escucharlo.
+          </p>
         </aside>
+      </div>
+    </section>
 
-        <section class="capture-proof" aria-label="Señales de encaje">
-          <p>Sirve si hoy:</p>
-          <ul>
-            <li>vendes o respondes demasiado por WhatsApp;</li>
-            <li>tu oferta cuesta explicarla rapido;</li>
-            <li>queres mejores consultas desde tu web;</li>
-            <li>operas con mensajes, planillas o pasos manuales;</li>
-            <li>tenes conocimiento experto que podria guiar clientes.</li>
+    <section class="section qualifier-section" aria-labelledby="fit-title">
+      <div class="site-shell qualifier-grid">
+        <div class="qualifier-copy">
+          <p class="eyebrow">Encaja si</p>
+          <h2 id="fit-title">Ya hay demanda, pero el sistema todavia depende demasiado de vos.</h2>
+          <p>
+            Entity Builders sirve cuando el problema no es "necesito una web",
+            sino ordenar una operacion que ya conversa, vende, responde o decide
+            todos los dias.
+          </p>
+        </div>
+        <div class="qualifier-panel">
+          <ul class="qualifier-list">
+            <li>WhatsApp mezcla ventas, soporte, pagos, preguntas y seguimiento.</li>
+            <li>Tu web, redes o landing no explican bien que ofrecer ni a quien.</li>
+            <li>El equipo opera con planillas, notas, audios o pasos que nadie ve.</li>
+            <li>Tenes expertise que podria guiar clientes, alumnos o prospectos.</li>
           </ul>
-        </section>
+          <div class="non-fit">
+            <strong>No es el mejor punto de partida si solo buscas una pieza visual aislada.</strong>
+            <p>
+              Ahi conviene validar mensaje o marca primero. Nosotros entramos
+              mejor cuando hay una parte del negocio lista para convertirse en
+              sistema.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <section class="entity-definition" id="entidad">
+    <section class="section definition-section" id="entidad">
+      <div class="site-shell entity-definition">
         <p class="definition-lede">
           Una entidad digital es una parte de tu negocio convertida en sistema:
-          una web, flujo, asistente o herramienta que trabaja con contexto real.
+          una web, flujo, asistente, dashboard o automatizacion que trabaja con
+          contexto real.
         </p>
         <div class="definition-grid">
           <div class="definition-tile">
@@ -95,14 +134,16 @@ import { processSteps, showroomEntities } from '../lib/siteData';
             <p>Reduce friccion operativa con datos, dashboards, workflows y specs privadas.</p>
           </div>
         </div>
-        </section>
+      </div>
+    </section>
 
-        <section class="process-section" id="proceso">
+    <section class="section process-section" id="proceso">
+      <div class="site-shell">
           <div class="section-heading section-heading--stacked">
-            <h2>Del contexto crudo a un sistema que trabaja.</h2>
+            <h2>Del contexto crudo a una primera version construible.</h2>
             <p>
               AI aparece como acelerador, no como promesa vacia. El trabajo es
-              producto, operacion, specs, infraestructura y aprendizaje real.
+              producto, operacion, criterios, infraestructura y aprendizaje real.
             </p>
           </div>
           <div class="process-grid">
@@ -114,7 +155,6 @@ import { processSteps, showroomEntities } from '../lib/siteData';
               </article>
             ))}
           </div>
-        </section>
       </div>
     </section>
 
@@ -123,8 +163,8 @@ import { processSteps, showroomEntities } from '../lib/siteData';
         <div class="section-heading">
           <h2>Ejemplos reales de sistemas online.</h2>
           <p>
-            No son slides de agencia. Son productos, experimentos y sistemas reales
-            del universo Entity Builders, cada uno en su estado honesto.
+            No son slides de agencia. Son productos, experimentos y sistemas
+            reales del universo Entity Builders, cada uno en su estado honesto.
           </p>
         </div>
         <div class="showroom-grid">
@@ -139,10 +179,12 @@ import { processSteps, showroomEntities } from '../lib/siteData';
             >
               <div class="entity-card__meta">
                 <span>{entity.type}</span>
-                <span class="status">{entity.status}</span>
+                <span class="status" data-status={entity.status}>{entity.statusLabel}</span>
               </div>
               <h3>{entity.name}</h3>
               <p>{entity.problem}</p>
+              <p class="entity-card__outcome">{entity.outcome}</p>
+              <strong class="entity-card__role">{entity.role}</strong>
               <div class="entity-card__systems">
                 {entity.systems.map((system) => <span>{system}</span>)}
               </div>
@@ -162,9 +204,31 @@ import { processSteps, showroomEntities } from '../lib/siteData';
           <p>
             Entity Builders es el estudio y laboratorio de Juan Obrach, senior
             product engineer. La marca permite construir mas que un portfolio; el
-            nombre detras mantiene criterio, responsabilidad y oficio en cada
-            decision.
+            nombre detras mantiene criterio, responsabilidad y oficio en cada decision.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section diagnostic-conversion" aria-labelledby="diagnostic-section-title">
+      <div class="site-shell diagnostic-layout">
+        <div class="diagnostic-copy">
+          <p class="eyebrow">Siguiente paso</p>
+          <h2 id="diagnostic-section-title">Trae tu contexto. Te devolvemos una lectura y un mapa inicial.</h2>
+          <p>
+            Podes pegar una web, redes, idea o problema operativo. El diagnostico
+            hace 2 o 3 preguntas, recomienda una direccion y prepara una vista
+            inicial de la entidad digital que conviene construir.
+          </p>
+          <div class="diagnostic-points">
+            <span>Sin prometer automatizaciones peligrosas.</span>
+            <span>Sin enviar datos privados a analytics.</span>
+            <span>Con revision humana donde el negocio necesita confianza.</span>
+          </div>
+          <a class="button" href="#diagnostico" data-analytics-surface="final_cta" data-analytics-action="start_diagnostic_map">Comenzar diagnostico</a>
+        </div>
+        <div class="diagnostic-shell diagnostic-shell--section" aria-label="Diagnostico gratis">
+          <DiagnosticFunnel client:load />
         </div>
       </div>
     </section>
