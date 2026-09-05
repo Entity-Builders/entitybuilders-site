@@ -1,4 +1,4 @@
-import { Analytics, PostHogProvider } from '@eb-packages/analytics';
+import { Analytics, PostHogProvider } from '@entity-builders/analytics';
 
 type PageType = 'home' | 'privacy' | 'unknown';
 
