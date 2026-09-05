@@ -11,7 +11,7 @@
   "dependencies": {
     "@astrojs/react": "^4.4.0",
     "@astrojs/sitemap": "^3.7.2",
-    "@entity-builders/analytics": "1.0.0",
+    "@entity-builders/analytics": "^1.0.0",
     "astro": "^5.5.0",
     "lucide-react": "^0.556.0",
     "react": "^19.2.0",
@@ -20,5 +20,10 @@
   "devDependencies": {
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3"
+  },
+  "packageManager": "yarn@4.13.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Entity-Builders/entitybuilders-site.git"
   }
 }
